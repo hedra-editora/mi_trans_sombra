@@ -55,7 +55,12 @@
 \marginparwidth=4em		% Tamanho da caixa de texto da nota laterial
 
 % Fontes
+% Path=fonts/ e obrigatorio: a Formular-regular-mi.otf desta pasta traz os
+% glifos pre-compostos do hup em U+0269 (ɨ com agudo) e U+026A (ɨ com marca
+% de tom), usados no titulo das capas. Sem o caminho explicito o LuaTeX pega
+% a copia instalada no sistema, que nao os tem, e o titulo sai furado.
 \newfontfamily\formular[
+  Path = fonts/,
   BoldFont = Formular-bold-mi.otf
 ]{Formular-regular-mi.otf}
 %\newfontfamily\formular{Formular}
