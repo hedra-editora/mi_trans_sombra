@@ -65,7 +65,21 @@
 ]{Formular-regular-mi.otf}
 %\newfontfamily\formular{Formular}
 \newfontfamily\formularlight{Formular Light}
-\setmainfont[Ligatures=TeX,Numbers=OldStyle]{Linux Libertine O}
+% -ccmp: sem isso a Libertine ROMANA troca ɨ+acento por i acentuado sem barra
+% (o itálico não tem o defeito). Afeta as palavras hup com tom no corpo do texto.
+\setmainfont[Ligatures=TeX,Numbers=OldStyle,RawFeature={-ccmp}]{Linux Libertine O}
+% Quando o ɨ recebe tom, o ponto sai (como í/ì do português; cf. Dicionário Hup,
+% Ramirez, p. 142: pɨnɨ́g/pɨnɨ̀g). A Libertine não faz isso sozinha, então o filtro
+% abaixo troca, só na entrada do compositor, ɨ+agudo/grave (U+0268+U+0301/U+0300)
+% por ı+barra+acento (U+0131+U+0335+acento). Os .tex ficam com o Unicode canônico
+% ɨ+acento — não "corrija" o texto para a forma composta.
+\directlua{
+  luatexbase.add_to_callback("process_input_buffer", function(line)
+    line = line:gsub("ɨ́", "ı̵́")
+    line = line:gsub("ɨ̀", "ı̵̀")
+    return line
+  end, "hup.dotless.tone.i")
+}
 %\setmainfont[Numbers={Proportional,OldStyle}]{Linux Libertine O}
 
 % Estilos
